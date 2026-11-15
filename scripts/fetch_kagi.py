@@ -1,5 +1,6 @@
 import logging
 import re
+import sys
 from pathlib import Path
 import requests
 from bs4 import BeautifulSoup
@@ -40,13 +41,13 @@ def extract_most_blocked_domains() -> list[str]:
         resp.raise_for_status()
     except Exception as exc:
         logger.error("请求 Kagi 页面失败: %s", exc)
-        return []
+        sys.exit(1)
 
     soup = BeautifulSoup(resp.text, "html.parser")
     rows = soup.select("tbody.leaderboard_body tr")
     if not rows:
         logger.error("未找到 tbody.leaderboard_body 表格行，页面结构可能已变更")
-        return []
+        sys.exit(1)
 
     seen: set[str] = set()
     domains: list[str] = []
@@ -66,8 +67,8 @@ def extract_most_blocked_domains() -> list[str]:
 def main() -> None:
     domains = extract_most_blocked_domains()
     if not domains:
-        logger.error("提取结果为空，跳过写入以保护现有文件")
-        return
+        logger.error("提取结果为空，终止写入以保护现有文件")
+        sys.exit(1)
 
     rules = [f"*://*.{d}/*" for d in domains]
     header = [

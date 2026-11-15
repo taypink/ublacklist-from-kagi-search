@@ -15,11 +15,13 @@
 
 ## 上游订阅源列表
 
+## 上游订阅源列表
+
 | name | URL | Description | Status |
 | --- | --- | --- | --- |
-| uBlock-Origin-dev-filter (ublacklist+global) | https://raw.githubusercontent.com/quenhus/uBlock-Origin-dev-filter/main/dist/other_format/uBlacklist/global.txt | 屏蔽机翻 GitHub、Stack Overflow | ❌ Possibly unmaintained (2025-04) |
-| TMW BL wikifarms by codeshell | https://raw.githubusercontent.com/codeshell/blocklists/main/by-format/ublacklist/wikifarms.all.txt | wiki.gg、Indie Wiki Buddy 信任的 wiki 站点 | ✅ Active (2026-11) |
-| Conspiracy Media blacklist | https://raw.githubusercontent.com/RubenKelevra/ublacklist_conspiracy/refs/heads/master/ublacklist-conspiracy-media-full.txt | 屏蔽大多数阴谋论媒体网站（如地平说、反疫苗或极端伪科学） | ❌ Possibly unmaintained (2025-02) |
-| ublacklist_fakenews | https://raw.githubusercontent.com/RubenKelevra/ublacklist_fakenews/refs/heads/master/ublacklist-fakenews-media-full.txt | 屏蔽大多数已知的假新闻与内容农场媒体（注意：若为 hblock 格式将被自动跳过，建议确认仓库内是否有 ublacklist 前缀文件） | ❌ Possibly unmaintained (2025-02) |
-| Google-Chinese-Results-Blocklist | https://raw.githubusercontent.com/cobaltdisco/Google-Chinese-Results-Blocklist/master/uBlacklist_subscription.txt | 百家号、xx云（腾讯、华为） | ✅ Active (2026-03) |
-| uBlockOrigin-HUGE-AI-Blocklist | https://raw.githubusercontent.com/laylavish/uBlockOrigin-HUGE-AI-Blocklist/refs/heads/main/list_uBlacklist.txt | 仅屏蔽纯 AI 站点和垃圾 AI 内容农场 | ❌ Possibly unmaintained (2025-10) |
+| uBlock-Origin-dev-filter | [global.txt](https://raw.githubusercontent.com/quenhus/uBlock-Origin-dev-filter/main/dist/other_format/uBlacklist/global.txt) | 屏蔽机翻 GitHub、Stack Overflow | ❌ Possibly unmaintained (2025-04) |
+| TMW BL wikifarms | [wikifarms.all.txt](https://raw.githubusercontent.com/codeshell/blocklists/main/by-format/ublacklist/wikifarms.all.txt) | wiki.gg、Indie Wiki Buddy 信任的 wiki 站点 | ✅ Active (2026-11) |
+| Conspiracy Media blacklist | [ublacklist-conspiracy-media-full.txt](https://raw.githubusercontent.com/RubenKelevra/ublacklist_conspiracy/refs/heads/master/ublacklist-conspiracy-media-full.txt) | 屏蔽大多数阴谋论媒体网站（地平说、反疫苗等） | ❌ Possibly unmaintained (2025-02) |
+| ublacklist_fakenews | [ublacklist-fakenews-media-full.txt](https://raw.githubusercontent.com/RubenKelevra/ublacklist_fakenews/refs/heads/master/ublacklist-fakenews-media-full.txt) | 屏蔽大多数已知的假新闻与内容农场媒体 | ❌ Possibly unmaintained (2025-02) |
+| Google-Chinese-Results-Blocklist | [uBlacklist_subscription.txt](https://raw.githubusercontent.com/cobaltdisco/Google-Chinese-Results-Blocklist/master/uBlacklist_subscription.txt) | 屏蔽百家号、CSDN 及云厂商采集站 | ✅ Active (2026-03) |
+| uBlockOrigin-HUGE-AI-Blocklist | [list_uBlacklist.txt](https://raw.githubusercontent.com/laylavish/uBlockOrigin-HUGE-AI-Blocklist/refs/heads/main/list_uBlacklist.txt) | 屏蔽纯 AI 站点和垃圾 AI 内容农场 | ❌ Possibly unmaintained (2025-10) |

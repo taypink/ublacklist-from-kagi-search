@@ -2,6 +2,7 @@ import json
 import logging
 import os
 import re
+import sys
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import unquote
@@ -20,9 +21,11 @@ KAGI_FILE = Path("rules/kagi-most-blocked.txt")
 MERGED_FILE = Path("rules/merged-subscriptions.txt")
 ALL_IN_ONE_FILE = Path("rules/all.txt")
 
-# 兼容 standard (/branch/path) 与 refs (/refs/heads/branch/path) 两种 GitHub Raw 链接格式
-RAW_URL_REGEX = re.compile(
-    r"^https://raw\.githubusercontent\.com/(?P<owner>[^/]+)/(?P<repo>[^/]+)/(?:refs/heads/)?(?P<branch>[^/]+)/(?P<path>.+)$"
+# 同时兼容纯文本 URL 与 Markdown 短链接 [text](https://raw.githubusercontent.com/...)
+CELL_URL_REGEX = re.compile(
+    r"^(?:\[[^\]]+\]\()?"
+    r"(?P<url>https://raw\.githubusercontent\.com/(?P<owner>[^/]+)/(?P<repo>[^/]+)/(?:refs/heads/)?(?P<branch>[^/]+)/(?P<path>[^\s\)]+))"
+    r"\)?$"
 )
 TABLE_HEADER_REGEX = re.compile(
     r"^\|\s*name\s*\|\s*URL\s*\|\s*Description\s*\|\s*Status\s*\|$",
@@ -93,7 +96,6 @@ def evaluate_status(commit_dt: datetime | None, now_utc: datetime) -> str:
 
 
 def is_valid_ublacklist_rule(line: str) -> bool:
-    """校验是否为合法的 uBlacklist 匹配模式或正则表达式规则"""
     clean = line.lstrip("@")
     if clean.startswith(("*://", "http://", "https://")):
         return True
@@ -107,7 +109,6 @@ def extract_clean_rules(text: str, source_label: str = "") -> set[str]:
     skipped_count = 0
     lines = text.splitlines()
 
-    # 跳过文件开头的 YAML frontmatter (--- ... ---)
     start_idx = 0
     for idx, raw in enumerate(lines):
         if raw.strip():
@@ -129,7 +130,7 @@ def extract_clean_rules(text: str, source_label: str = "") -> set[str]:
 
     if skipped_count > 0:
         logger.warning(
-            "源 [%s] 中有 %d 行不符合 uBlacklist 规则语法（如 hosts 格式），已自动过滤",
+            "源 [%s] 中有 %d 行不符合 uBlacklist 规则语法，已自动过滤",
             source_label,
             skipped_count,
         )
@@ -144,18 +145,30 @@ def write_if_changed(target_path: Path, content: str) -> bool:
     return True
 
 
-def download_and_merge_rules(valid_urls: list[str]) -> set[str]:
+def download_and_merge_rules(valid_urls: list[str]) -> tuple[bool, set[str]]:
+    """原子拉取所有有效上游源；若任一源下载失败则返回 False，避免覆盖现有规则"""
     merged_rules: set[str] = set()
+    all_succeeded = True
+
     for url in valid_urls:
         try:
             logger.info("下载上游规则: %s", url)
             resp = requests.get(url, timeout=25)
             resp.raise_for_status()
             extracted = extract_clean_rules(resp.text, source_label=url.split("/")[-1])
+            if not extracted:
+                logger.warning("源 [%s] 提取有效规则为 0 条，标记为异常", url)
+                all_succeeded = False
+                continue
             logger.info("  -> 提取有效规则 %d 条", len(extracted))
             merged_rules.update(extracted)
         except Exception as exc:
-            logger.error("下载规则失败，已跳过 [%s]: %s", url, exc)
+            logger.error("下载规则失败 [%s]: %s", url, exc)
+            all_succeeded = False
+
+    if not all_succeeded:
+        logger.error("存在上游规则下载异常，中止覆写 merged-subscriptions.txt 与状态文件以保护现有规则")
+        return False, set()
 
     header = [
         "# Title: Merged Upstream uBlacklist Subscriptions",
@@ -170,7 +183,7 @@ def download_and_merge_rules(valid_urls: list[str]) -> set[str]:
     else:
         logger.info("%s 内容无变化（共 %d 条）", MERGED_FILE, len(sorted_rules))
 
-    return merged_rules
+    return True, merged_rules
 
 
 def rebuild_all_in_one_file(upstream_rules: set[str] | None = None) -> None:
@@ -221,7 +234,7 @@ def save_state(state: dict[str, str]) -> None:
 def main() -> None:
     if not README_FILE.exists():
         logger.error("未找到 README.md，终止执行")
-        return
+        sys.exit(1)
 
     lines = README_FILE.read_text(encoding="utf-8").splitlines()
     headers = build_github_headers()
@@ -234,6 +247,7 @@ def main() -> None:
 
     valid_urls: list[str] = []
     current_shas: dict[str, str] = {}
+    has_error = False
 
     for line in lines:
         stripped = line.strip()
@@ -265,13 +279,15 @@ def main() -> None:
                 updated_lines.append(line)
                 continue
 
-            name, url, description, _old_status = cells[0], cells[1], cells[2], cells[3]
-            match = RAW_URL_REGEX.match(url)
+            name, url_cell, description, _old_status = cells[0], cells[1], cells[2], cells[3]
+            match = CELL_URL_REGEX.match(url_cell)
 
             if not match:
-                logger.warning("URL 格式不符合 GitHub Raw 规范: %s", url)
+                logger.warning("URL 格式不符合 GitHub Raw 规范: %s", url_cell)
                 new_status = "⚠️ Error / Not Found"
+                has_error = True
             else:
+                raw_url = match.group("url")
                 sha, commit_dt = fetch_latest_commit_info(
                     owner=match.group("owner"),
                     repo=match.group("repo"),
@@ -281,10 +297,13 @@ def main() -> None:
                 )
                 new_status = evaluate_status(commit_dt, now_utc)
                 if sha is not None:
-                    valid_urls.append(url)
-                    current_shas[url] = sha
+                    valid_urls.append(raw_url)
+                    current_shas[raw_url] = sha
+                else:
+                    has_error = True
 
-            new_line = f"| {name} | {url} | {description} | {new_status} |"
+            # 保留原始 url_cell（兼容短链接格式），仅更新第四列状态
+            new_line = f"| {name} | {url_cell} | {description} | {new_status} |"
             if new_line != line:
                 readme_changed = True
             updated_lines.append(new_line)
@@ -294,17 +313,27 @@ def main() -> None:
         logger.info("已回写更新 README.md 状态表格")
 
     previous_shas = load_previous_state()
-    need_merge = (current_shas != previous_shas) or (not MERGED_FILE.exists())
-
     upstream_rules: set[str] | None = None
-    if need_merge:
-        logger.info("检测到上游 SHA 变化或本地合并文件缺失，开始拉取并合并规则")
-        upstream_rules = download_and_merge_rules(valid_urls)
-        save_state(current_shas)
+
+    if has_error:
+        logger.error("部分上游源 API 检测异常，跳过覆盖上游合并文件与 SHA 状态，保留历史有效规则")
     else:
-        logger.info("上游 Commit SHA 未变化，跳过重新下载")
+        need_merge = (current_shas != previous_shas) or (not MERGED_FILE.exists())
+        if need_merge:
+            logger.info("检测到上游 SHA 变化或本地合并文件缺失，开始原子拉取并合并规则")
+            merge_ok, fetched_rules = download_and_merge_rules(valid_urls)
+            if merge_ok:
+                upstream_rules = fetched_rules
+                save_state(current_shas)
+            else:
+                has_error = True
+        else:
+            logger.info("上游 Commit SHA 未变化，跳过重新下载")
 
     rebuild_all_in_one_file(upstream_rules)
+
+    if has_error:
+        sys.exit(1)
 
 
 if __name__ == "__main__":

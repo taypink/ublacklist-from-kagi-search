@@ -2,7 +2,7 @@ name: Auto Update uBlacklist Rules
 
 on:
   schedule:
-    # 每月 1 日 UTC 02:00（北京时间 10:00）自动运行，防止仓库因长期无活动导致 Actions 被禁用
+    # 每月 1 日 UTC 02:00（北京时间 10:00）自动运行
     - cron: '0 2 1 * *'
   workflow_dispatch:
 
@@ -26,13 +26,22 @@ jobs:
         run: uv sync
 
       - name: Subproject 1 - Fetch Kagi Most Blocked Domains
+        id: kagi
         run: uv run scripts/fetch_kagi.py
 
       - name: Subproject 2 - Check Upstreams and Merge Rules
+        id: upstreams
         if: always()
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: uv run scripts/check_upstreams.py
+
+      - name: Record Execution History
+        if: always()
+        env:
+          KAGI_OUTCOME: ${{ steps.kagi.outcome }}
+          UPSTREAM_OUTCOME: ${{ steps.upstreams.outcome }}
+        run: uv run scripts/record_exec.py
 
       - name: Commit and push changes
         if: always()
