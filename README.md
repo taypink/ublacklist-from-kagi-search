@@ -37,14 +37,17 @@ A serverless, automated **uBlacklist** filter ruleset powered by GitHub Actions.
 
    Dropped headless browsers (Playwright) in favor of direct HTTP requests. 
    Switches between Kagi's `Blocked` (`k=-2`) and `Lowered` (`k=-1`) SSR leaderboards via URL query parameters for fast, low-overhead extraction.     
+
    不用Playwright，直接通过 HTTP 请求解析服务端页面，再用URL参数 `k=-2`（Blocked）与 `k=-1`（Lowered）切换并提取对应榜单。
 
 2. Validation & Deduplication / 语法校验与全局去重
 
    Filters out non-uBlacklist syntax (e.g., hosts format or YAML frontmatter) and performs cross-source deduplication across Kagi lists and upstream subscriptions before sorting. 
+
    自动过滤非uBlacklist 语法(如 hosts 格式或 YAML 元信息)，并对 Kagi 榜单、多个上游订阅源进行去重&重排。
 
 3. Automated CI/CD & Health Tracking / 自动化与状态追踪
 
    Uses GitHub Actions to inspect single-file commit history via the GitHub API (`Active` within 365 days vs. `Possibly unmaintained`), atomically updates rules only when upstream SHAs change, and logs execution history to prevent scheduled workflow deactivation.
+
    通过 GitHub Actions 调用 GitHub Commits API 检测上游订阅的单文件更新时间（365 天内→活跃），仅在 SHA 变更时更新规则集，并每个月执行一次，记录执行日志以防Github Action超60D被ban。
