@@ -40,6 +40,7 @@ A serverless, automated **uBlacklist** filter ruleset powered by GitHub Actions.
    不用Playwright，直接通过 HTTP 请求解析服务端页面，再用URL参数 `k=-2`（Blocked）与 `k=-1`（Lowered）切换并提取对应榜单。
 
 2. Validation & Deduplication / 语法校验与全局去重
+
    Filters out non-uBlacklist syntax (e.g., hosts format or YAML frontmatter) and performs cross-source deduplication across Kagi lists and upstream subscriptions before sorting. 
    自动过滤非uBlacklist 语法(如 hosts 格式或 YAML 元信息)，并对 Kagi 榜单、多个上游订阅源进行去重&重排。
 
