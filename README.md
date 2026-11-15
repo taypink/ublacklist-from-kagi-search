@@ -13,10 +13,6 @@
 
 ## 上游订阅源列表
 
-## 上游订阅源列表
-
-## 上游订阅源列表
-
 | name | URL | Description | Status |
 | --- | --- | --- | --- |
 | uBlock-Origin-dev-filter | [global.txt](https://raw.githubusercontent.com/quenhus/uBlock-Origin-dev-filter/main/dist/other_format/uBlacklist/global.txt) | 屏蔽机翻 GitHub、Stack Overflow | ❌ Possibly unmaintained (2025-04) |
