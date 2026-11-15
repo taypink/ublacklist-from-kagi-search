@@ -1,0 +1,48 @@
+name: Auto Update uBlacklist Rules
+
+on:
+  schedule:
+    # 每月 1 日 UTC 02:00（北京时间 10:00）自动运行，防止仓库因长期无活动导致 Actions 被禁用
+    - cron: '0 2 1 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-rules:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up uv and Python
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Subproject 1 - Fetch Kagi Most Blocked Domains
+        run: uv run scripts/fetch_kagi.py
+
+      - name: Subproject 2 - Check Upstreams and Merge Rules
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: uv run scripts/check_upstreams.py
+
+      - name: Commit and push changes
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add rules/ README.md .state/
+          if git diff --staged --quiet; then
+            echo "No changes detected. Skipping commit."
+          else
+            git commit -m "chore(rules): automated uBlacklist rules update"
+            git push
+          fi
