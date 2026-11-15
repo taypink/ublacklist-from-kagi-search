@@ -4,5 +4,9 @@
 
 | Date (UTC+8) | Kagi Rules | Upstream Rules | All-in-One Rules | Status |
 | --- | --- | --- | --- | --- |
+<<<<<<< HEAD
 | 2026-11-15 14:46:58 | 50 | 7935 | 7970 | ✅ Success |
+=======
+| 2026-11-15 23:08:04 | 63 | 7935 | 7983 | ✅ Success |
+>>>>>>> 4d674d8 (feat(kagi): fetch both blocked and lowered insights with deduplication)
 | 2026-11-15 14:44:33 | 50 | 7935 | 7970 | ✅ Success |

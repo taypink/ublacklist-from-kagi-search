@@ -1,6 +1,8 @@
-# Title: uBlacklist from Kagi Search Insights
+# Title: uBlacklist from Kagi Search Insights (Blocked & Lowered)
 # Source: https://kagi.com/stats?stat=insights
+# Description: Most blocked (k=-2) and lowered (k=-1) domains from Kagi Search
 
+# === Kagi Insights: Blocked ===
 *://*.pinterest.com/*
 *://*.pinterest.co.uk/*
 *://*.pinterest.de/*
@@ -51,3 +53,18 @@
 *://*.washingtonpost.com/*
 *://*.newbedev.com/*
 *://*.lightrun.com/*
+
+# === Kagi Insights: Lowered ===
+*://*.nytimes.com/*
+*://*.reddit.com/*
+*://*.fandom.com/*
+*://*.play.google.com/*
+*://*.answers.microsoft.com/*
+*://*.etsy.com/*
+*://*.makeuseof.com/*
+*://*.sourceforge.net/*
+*://*.x.com/*
+*://*.ign.com/*
+*://*.freecodecamp.org/*
+*://*.youtube.com/*
+*://*.towardsdatascience.com/*

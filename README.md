@@ -1,5 +1,7 @@
 # ublacklist-from-kagi-search
 
+抓取Kagi 搜索引擎的统计洞察数据中的 blocked、lowered数据，自动生成一份列表
+
 基于 GitHub Actions 的无服务器（Serverless）自动化 **uBlacklist** 搜索引擎过滤规则仓库。
 
 ## 订阅链接
@@ -21,3 +23,4 @@
 | ublacklist_fakenews | [ublacklist-fakenews-media-full.txt](https://raw.githubusercontent.com/RubenKelevra/ublacklist_fakenews/refs/heads/master/ublacklist-fakenews-media-full.txt) | 屏蔽大多数已知的假新闻与内容农场媒体 | ❌ Possibly unmaintained (2025-02) |
 | Google-Chinese-Results-Blocklist | [uBlacklist_subscription.txt](https://raw.githubusercontent.com/cobaltdisco/Google-Chinese-Results-Blocklist/master/uBlacklist_subscription.txt) | 屏蔽百家号、CSDN 及云厂商采集站 | ✅ Active (2026-03) |
 | uBlockOrigin-HUGE-AI-Blocklist | [list_uBlacklist.txt](https://raw.githubusercontent.com/laylavish/uBlockOrigin-HUGE-AI-Blocklist/refs/heads/main/list_uBlacklist.txt) | 屏蔽纯 AI 站点和垃圾 AI 内容农场 | ❌ Possibly unmaintained (2025-10) |
+

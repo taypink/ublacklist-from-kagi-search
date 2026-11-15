@@ -599,6 +599,7 @@
 *://*.answerforyou.net/*
 *://*.answeright.com/*
 *://*.answerlib.com/*
+*://*.answers.microsoft.com/*
 *://*.answersfordevelopers.blogspot.com/*
 *://*.answersingenesis.org/*
 *://*.answerspoint.com/*
@@ -2216,6 +2217,7 @@
 *://*.estherboesche.com/*
 *://*.eternal-tales.fandom.com/*
 *://*.eternitydev-games.fandom.com/*
+*://*.etsy.com/*
 *://*.etsy.com/listing/1368236844/*
 *://*.etsy.com/listing/1458059429/*
 *://*.eugenics.news/*
@@ -2310,6 +2312,7 @@
 *://*.familysurvivalheadlines.com/*
 *://*.famousboards.com/*
 *://*.fancade.fandom.com/wiki/*
+*://*.fandom.com/*
 *://*.fangbianyouyu.com/*
 *://*.fantashit.com/*
 *://*.fantasy-life.fandom.com/*
@@ -2458,6 +2461,7 @@
 *://*.free-speechfront.info/*
 *://*.free699.com/*
 *://*.freeaiavatargenerator.pro/*
+*://*.freecodecamp.org/*
 *://*.freedom.news/*
 *://*.freedomadvocates.org/*
 *://*.freedomain.com/*
@@ -3127,6 +3131,7 @@
 *://*.idyllic.app/*
 *://*.igarden365.com/*
 *://*.igiftidea.com/*
+*://*.ign.com/*
 *://*.igot.coffee/*
 *://*.iharare.com/*
 *://*.ihatethemedia.com/*
@@ -3917,6 +3922,7 @@
 *://*.makenude.ai/*
 *://*.makersplace.com/*
 *://*.maket.ai/*
+*://*.makeuseof.com/*
 *://*.maloneinstitute.org/*
 *://*.mamacita.ai/*
 *://*.mamicode.com/*
@@ -4620,6 +4626,7 @@
 *://*.nycgazette.com/*
 *://*.nyp655.com/*
 *://*.nypost.com/*
+*://*.nytimes.com/*
 *://*.nzdsos.com/*
 *://*.nzreport.com/*
 *://*.o2onlyone.net/*
@@ -4946,6 +4953,7 @@
 *://*.platinumpro-online.com/*
 *://*.plattenews.com/*
 *://*.play-track.com/*
+*://*.play.google.com/*
 *://*.play.google.com/store/apps/details?id=ai.art.anime/*
 *://*.play.google.com/store/apps/details?id=ai.art.generator.design/*
 *://*.play.google.com/store/apps/details?id=aiart.generator.aigc/*
@@ -5348,6 +5356,7 @@
 *://*.redbubble.com/i/pin/Steampunk-female-portrait-Cel-shading-Japan-anime-style-by-DigitalEmporio/152924525.NP9QY/*
 *://*.redbubble.com/people/digitalemporio/shop/*
 *://*.reddingtoday.com/*
+*://*.reddit.com/*
 *://*.reddit.com/r/3amAI/*
 *://*.reddit.com/r/ADULT_ART_AI/*
 *://*.reddit.com/r/AIArtCreator/*
@@ -6062,6 +6071,7 @@
 *://*.soundful.com/*
 *://*.soundraw.io/*
 *://*.sounote.cc/*
+*://*.sourceforge.net/*
 *://*.southabqnews.com/*
 *://*.southafricatoday.net/*
 *://*.southalabamatimes.com/*
@@ -6799,6 +6809,7 @@
 *://*.tousu.in/*
 *://*.toutiao.com/*
 *://*.touyinghome.com/*
+*://*.towardsdatascience.com/*
 *://*.tower-unite.fandom.com/*
 *://*.towerclimb.fandom.com/*
 *://*.towerfall.fandom.com/*
@@ -7512,6 +7523,7 @@
 *://*.wznk.net/*
 *://*.x-mol.com/*
 *://*.x-pictures.io/*
+*://*.x.com/*
 *://*.x.com/21xfour/*
 *://*.x.com/AI_ART__/*
 *://*.x.com/AI_Art_Gura/*
@@ -7711,6 +7723,7 @@
 *://*.your-chronicle.fandom.com/*
 *://*.yournews.com/*
 *://*.yourtango.com/*
+*://*.youtube.com/*
 *://*.youtube.com/@LaCarnevali/*
 *://*.youtube.com/@OlivioSarikas/*
 *://*.youtube.com/@SHAD_AI/*
